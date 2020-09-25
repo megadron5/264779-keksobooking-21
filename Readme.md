@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Неопознанный енот](https://up.htmlacademy.ru/javascript/21/user/264779).
-* Наставник: `Дмитрий Быков`.
+* Наставник: [Дмитрий Быков](https://htmlacademy.ru/profile/id618225).
 
 ---
 
