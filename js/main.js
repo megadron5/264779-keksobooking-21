@@ -12,41 +12,41 @@ const PHOTOS_OF = [
 ];
 const QUANTITY = 8;
 const Price = {
-    min: 3000,
-    max: 250000
+  min: 3000,
+  max: 250000
 };
-const Rooms ={
-    min: 1,
-    max 15
+const Rooms = {
+  min: 1,
+  max: 15
 };
 const Guests = {
-    min: 1,
-    max: 30
+  min: 1,
+  max: 30
 };
 const locationY = {
-    min: 130,
-    max: 630
+  min: 130,
+  max: 630
 };
-const myMap = document,querySelector(`.map`);
+const myMap = document.querySelector(`.map`);
 myMap.classList.remove(`.map--faded`);
 const myPins = document.querySelector(`.map__pins`);
 const advertNew = document.querySelector(`#pin`).content;
 
 const getMyNumber = (min, max) => Math.round(Math.random() * (max - min)) + min;
 const getMyElement = (items) => items[Math.floor(Math.random() * items.length)];
-const getMyNumber = (num) => Math.round(num / 1000) * 1000;
+const getRoundNumber = (num) => Math.round(num / 1000) * 1000;
 
 const getAdvert = () => {
   const mapX = getMyNumber(0, myMap.offsetWidth);
   const mapY = getMyNumber(locationY.min, locationY.max);
-return {
+  return {
     author: {
       avatar: `img/avatars/user0${getMyNumber(1, QUANTITY)}.png`
     },
     offer: {
       title: getMyElement(TITLES_OF),
       address: `${mapX}, ${mapY}`,
-      price: getMyNumber(getMyNumber(Price.min, Price.max)),
+      price: getRoundNumber(getMyNumber(Price.min, Price.max)),
       type: getMyElement(TYPES_OF),
       rooms: getMyNumber(Rooms.min, Rooms.max),
       guests: getMyNumber(Guests.min, Guests.max),
@@ -63,7 +63,7 @@ return {
   };
 };
 
-const AdvertsGen = (quantity) => {
+const advertsGen = (quantity) => {
   const adverts = [];
   for (let i = 0; i < quantity; i++) {
     adverts.push(getAdvert());
@@ -85,8 +85,7 @@ const createPin = (pinData) => {
 
 const fragment = document.createDocumentFragment();
 
-AdvertsGen(QUANTITY).forEach((pin) => {
+advertsGen(QUANTITY).forEach((pin) => {
   fragment.appendChild(createPin(pin));
 });
-pinsList.appendChild(fragment); 
-
+myPins.appendChild(fragment);
