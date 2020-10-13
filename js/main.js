@@ -77,8 +77,8 @@ const createPin = (pinData) => {
   const pinPhoto = pinElement.querySelector(`img`);
   pinButton.style.left = `${pinData.location.x - pinButton.offsetWidth}px`;
   pinButton.style.top = `${pinData.location.y - pinButton.offsetHeight}px`;
-  pinPhoto.src = pinData.photos.of;
-  pinPhoto.alt = pinData.title.of;
+  pinPhoto.src = pinData.offer.photos;
+  pinPhoto.alt = pinData.offer.title;
 
   return pinElement;
 };
