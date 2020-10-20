@@ -1,5 +1,6 @@
 'use strict';
 
+
 const CARD_PHOTO_WIDTH = 45;
 const CARD_PHOTO_HEIGHT = 40;
 const ARRAY_LENGTH = 8;
