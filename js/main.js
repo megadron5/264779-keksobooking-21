@@ -9,7 +9,7 @@ const MAX_VALUE_ARRAY = 10;
 const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
 const map = document.querySelector(`.map`);
-const my_array = [];
+const myArray = [];
 const filter = document.querySelector(`.map__filters-container`);
 const OFFERS = {
   ROOMS: [`palace`, `flat`, `house`, `bungalow`],
@@ -47,7 +47,7 @@ for (let i = 0; i < ARRAY_LENGTH; i++) {
     x: randomValue(0, mapWidth),
     y: randomValue(MIN_VALUE_Y, MAX_VALUE_Y)
   };
-  my_array.push({
+  myArray.push({
     author: {
       avatar: `img/avatars/user0${i + 1}.png`
     },
@@ -138,8 +138,8 @@ const renderPin = function (pin) {
 };
 
 map.classList.remove(`map--faded`);
-my_array.forEach(function (mock) {
+myArray.forEach(function (mock) {
   fragment.appendChild(renderPin(mock));
 });
 mapPins.appendChild(fragment);
-map.insertBefore(renderCard(my_array[0]), filter);
+map.insertBefore(renderCard(myArray[0]), filter);
