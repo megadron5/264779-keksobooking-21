@@ -1,91 +1,146 @@
 'use strict';
 
-const TITLES_OF = [`Домик`, `Квартира`, `Аппартаменты`, `Сарай`, `Чердак`, `Гостевой дом`];
-const TYPES_OF = [`palace`, `flat`, `house`, `bungalow`];
-const TIME_INOUT = [`12:00`, `13:00`, `14:00`];
-const FEATURES_OF = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const DESCRIPTION_OF = [`Большой дом с трубой.`, `Хороший район.`, `Имеется площадка выгула собак.`, `В комплексе есть банька и купель.`];
-const PHOTOS_OF = [
-  `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
-];
-const QUANTITY = 8;
-const Price = {
-  min: 3000,
-  max: 250000
-};
-const Rooms = {
-  min: 1,
-  max: 15
-};
-const Guests = {
-  min: 1,
-  max: 30
-};
-const locationY = {
-  min: 130,
-  max: 630
-};
-const myMap = document.querySelector(`.map`);
-myMap.classList.remove(`.map--faded`);
-const myPins = document.querySelector(`.map__pins`);
-const advertNew = document.querySelector(`#pin`).content;
 
-const getMyNumber = (min, max) => Math.round(Math.random() * (max - min)) + min;
-const getMyElement = (items) => items[Math.floor(Math.random() * items.length)];
-const getRoundNumber = (num) => Math.round(num / 1000) * 1000;
-
-const getAdvert = () => {
-  const mapX = getMyNumber(0, myMap.offsetWidth);
-  const mapY = getMyNumber(locationY.min, locationY.max);
-  return {
-    author: {
-      avatar: `img/avatars/user0${getMyNumber(1, QUANTITY)}.png`
-    },
-    offer: {
-      title: getMyElement(TITLES_OF),
-      address: `${mapX}, ${mapY}`,
-      price: getRoundNumber(getMyNumber(Price.min, Price.max)),
-      type: getMyElement(TYPES_OF),
-      rooms: getMyNumber(Rooms.min, Rooms.max),
-      guests: getMyNumber(Guests.min, Guests.max),
-      checkin: getMyElement(TIME_INOUT),
-      checkout: getMyElement(TIME_INOUT),
-      features: FEATURES_OF.slice(0, getMyNumber(0, FEATURES_OF.length)),
-      description: getMyElement(DESCRIPTION_OF),
-      photos: getMyElement(PHOTOS_OF)
-    },
-    location: {
-      x: mapX,
-      y: mapY
-    }
-  };
+const CARD_PHOTO_WIDTH = 45;
+const CARD_PHOTO_HEIGHT = 40;
+const ARRAY_LENGTH = 8;
+const MAX_VALUE_Y = 630;
+const MIN_VALUE_Y = 130;
+const MAX_VALUE_ARRAY = 10;
+const PIN_WIDTH = 50;
+const PIN_HEIGHT = 70;
+const map = document.querySelector(`.map`);
+const myArray = [];
+const filter = document.querySelector(`.map__filters-container`);
+const OFFERS = {
+  ROOMS: [`palace`, `flat`, `house`, `bungalow`],
+  FEATURES: [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`],
+  CHECKTIME: [`12:00`, `13:00`, `14:00`]
 };
-
-const advertsGen = (quantity) => {
-  const adverts = [];
-  for (let i = 0; i < quantity; i++) {
-    adverts.push(getAdvert());
+const randomValue = function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+const createRandomArray = function (arrayLength, values) {
+  const newArray = [];
+  for (let i = 0; i < randomValue(1, arrayLength); i++) {
+    newArray.push(values[randomValue(0, arrayLength)]);
   }
-  return adverts;
-};
-
-const createPin = (pinData) => {
-  const pinElement = advertNew.cloneNode(true);
-  const pinButton = pinElement.querySelector(`.map__pin`);
-  const pinPhoto = pinElement.querySelector(`img`);
-  pinButton.style.left = `${pinData.location.x - pinButton.offsetWidth}px`;
-  pinButton.style.top = `${pinData.location.y - pinButton.offsetHeight}px`;
-  pinPhoto.src = pinData.offer.photos;
-  pinPhoto.alt = pinData.offer.title;
-
-  return pinElement;
+  return newArray;
 };
 
 const fragment = document.createDocumentFragment();
+const mapPins = document.querySelector(`.map__pins`);
 
-advertsGen(QUANTITY).forEach((pin) => {
-  fragment.appendChild(createPin(pin));
+const cardTemplate = document.querySelector(`#card`)
+  .content
+  .querySelector(`.map__card`);
+
+const pinTemplate = document.querySelector(`#pin`)
+  .content
+  .querySelector(`.map__pin`);
+
+const mapWidth = mapPins.clientWidth;
+
+for (let i = 0; i < ARRAY_LENGTH; i++) {
+  const location = {
+    x: randomValue(0, mapWidth),
+    y: randomValue(MIN_VALUE_Y, MAX_VALUE_Y)
+  };
+  myArray.push({
+    author: {
+      avatar: `img/avatars/user0${i + 1}.png`
+    },
+    offer: {
+      title: `Объявление`,
+      address: `${location.x}, ${location.y}`,
+      price: 5200,
+      type: OFFERS.ROOMS[randomValue(0, OFFERS.ROOMS.length - 1)],
+      rooms: randomValue(1, MAX_VALUE_ARRAY),
+      guests: randomValue(1, MAX_VALUE_ARRAY),
+      checkin: OFFERS.CHECKTIME[randomValue(0, OFFERS.CHECKTIME.length - 1)],
+      checkout: OFFERS.CHECKTIME[randomValue(0, OFFERS.CHECKTIME.length - 1)],
+      features: createRandomArray(OFFERS.FEATURES.length - 1, OFFERS.FEATURES),
+      description: `Описание`,
+      photos: [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`]
+    },
+    location: {
+      x: location.x,
+      y: location.y
+    },
+  });
+}
+
+const renderCard = function (card) {
+  const cardElement = cardTemplate.cloneNode(true);
+  const offer = card.offer;
+  const author = card.author;
+  const featuresArray = offer.features;
+  const photosArray = offer.photos;
+  cardElement.querySelector(`.popup__title`).textContent = `${offer.title}`;
+  cardElement.querySelector(`.popup__text--address`).textContent = `${offer.address}`;
+  cardElement.querySelector(`.popup__text--price`).textContent = `${offer.price}₽/ночь`;
+
+  if (offer.type === `flat`) {
+    cardElement.querySelector(`.popup__type`).textContent = `Квартира`;
+  } else if (offer.type === `bungalow`) {
+    cardElement.querySelector(`.popup__type`).textContent = `Бунгало`;
+  } else if (offer.type === `house`) {
+    cardElement.querySelector(`.popup__type`).textContent = `Дом`;
+  } else if (offer.type === `palace`) {
+    cardElement.querySelector(`.popup__type`).textContent = `Дворец`;
+  }
+
+  cardElement.querySelector(`.popup__text--capacity`).textContent = `${offer.rooms} комнаты для ${offer.guests} гостей.`;
+  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}.`;
+
+  const featuresList = cardElement.querySelector(`.popup__features`);
+  while (featuresList.firstChild) {
+    featuresList.removeChild(featuresList.firstChild);
+  }
+  for (let i = 0; i < featuresArray.length; i++) {
+    const feature = document.createElement(`li`);
+    feature.className = `popup__feature popup__feature--${offer.features[i]}`;
+    featuresList.appendChild(feature);
+  }
+
+  cardElement.querySelector(`.popup__description`).textContent = `${offer.description}`;
+
+  const photosList = cardElement.querySelector(`.popup__photos`);
+  while (photosList.firstChild) {
+    photosList.removeChild(photosList.firstChild);
+  }
+  for (let i = 0; i < photosArray.length; i++) {
+    const photo = document.createElement(`img`);
+    photo.className = `popup__photo`;
+    photo.src = `${photosArray[i]}`;
+    photo.alt = `${offer.title}`;
+    photo.width = `${CARD_PHOTO_WIDTH}`;
+    photo.height = `${CARD_PHOTO_HEIGHT}`;
+    photosList.appendChild(photo);
+  }
+
+  cardElement.querySelector(`.popup__avatar`).src = `${author.avatar}`;
+  return cardElement;
+};
+
+const renderPin = function (pin) {
+  const pinElement = pinTemplate.cloneNode(true);
+  const location = pin.location;
+  const locationX = location.x - PIN_WIDTH / 2;
+  const locationY = location.y - PIN_HEIGHT;
+  const author = pin.author;
+  const offer = pin.offer;
+  pinElement.style = `left: ${locationX}px; top: ${locationY}px;`;
+  pinElement.querySelector(`img`).src = `${author.avatar}`;
+  pinElement.querySelector(`img`).alt = `${offer.title}`;
+  return pinElement;
+};
+
+map.classList.remove(`map--faded`);
+myArray.forEach(function (mock) {
+  fragment.appendChild(renderPin(mock));
 });
-myPins.appendChild(fragment);
+mapPins.appendChild(fragment);
+map.insertBefore(renderCard(myArray[0]), filter);
