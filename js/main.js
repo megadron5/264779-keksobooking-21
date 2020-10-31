@@ -325,15 +325,13 @@ const activatePage = function () {
   renderCardOnMap(ads[0]);
 };
 
-mainPin.addEventListener(`mousedown`, function (evt) {
-  if (evt.button === 0) {
-    activatePage();
+const onMainPinClick = function (evt){
+  if (evt.which === 1 || evt.key === `Enter`){
+      activatePage();
   }
-});
+  mainPin.removeEventListener(`mousedown`, onMainPinClick);
+  mainPin.removeEventListener(`keydown`, onMainPinClick);
+};
 
-mainPin.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
-    activatePage();
-  }
-});
-
+mainPin.addEventListener(`mousedown`, onMainPinClick);
+mainPin.addEventListener(`keydown`, onMainPinClick);
