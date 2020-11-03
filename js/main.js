@@ -322,21 +322,21 @@ const activatePage = function () {
   const ads = getAds();
   renderChildren(mapPins, ads, renderPin);
   renderCardOnMap(ads[0]);
+  window.removeEventListener(`keydown`, handleKeyDown);
+  window.removeEventListener(`mousedown`, handleMouseDown);
 };
 
 
-const handleKeyDown = function (evt) {
+function handleKeyDown(evt) {
   if (evt.key === `Enter`) {
     activatePage();
-    window.removeEventListener(`keydown`, handleKeyDown);
   }
-};
-const handleMouseDown = function (evt) {
+}
+function handleMouseDown(evt) {
   if (evt.which === 1) {
     activatePage();
-    window.removeEventListener(`mousedown`, handleMouseDown);
   }
-};
+}
 
 window.addEventListener(`mousedown`, handleMouseDown);
 window.addEventListener(`keydown`, handleKeyDown);
