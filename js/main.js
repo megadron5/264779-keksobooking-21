@@ -318,20 +318,27 @@ const onFormChange = function (on) {
 const activatePage = function () {
   disablePage(false);
   inputAdress.value = getLocationMainPin(ActiveMainPin.WIDTH, ActiveMainPin.HEIGHT, ActiveMainPin.PROPORTION);
-
-  onFormChange(true);
+  mainPin.addEventListener(`click`, onFormChange);
   const ads = getAds();
   renderChildren(mapPins, ads, renderPin);
   renderCardOnMap(ads[0]);
 };
 
-const onMainPinClick = function (evt){
-  if (evt.which === 1 || evt.key === `Enter`){
-      activatePage();
+
+const handleKeyDown = function (evt) {
+  if (evt.key === `Enter`) {
+    activatePage();
+    window.removeEventListener(`keydown`, handleKeyDown);
   }
-  mainPin.removeEventListener(`mousedown`, onMainPinClick);
-  mainPin.removeEventListener(`keydown`, onMainPinClick);
+};
+const handleMouseDown = function (evt) {
+  if (evt.which === 1) {
+    activatePage();
+    window.removeEventListener(`mousedown`, handleMouseDown);
+  }
 };
 
-mainPin.addEventListener(`mousedown`, onMainPinClick);
-mainPin.addEventListener(`keydown`, onMainPinClick);
+window.addEventListener(`mousedown`, handleMouseDown);
+window.addEventListener(`keydown`, handleKeyDown);
+
+
