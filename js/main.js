@@ -20,11 +20,18 @@ const Offer = {
   PHOTO_ALT: `Фото жилья`
 };
 
-const types = {
-  flat: `Квартира`,
+const Types = {
   bungalow: `Бунгало`,
-  palace: `Дворец`,
-  house: `Дом`
+  flat: `Квартира`,
+  house: `Дом`,
+  palace: `Дворец`
+};
+
+const MinPriceByType = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
 };
 
 const MapSize = {
@@ -51,6 +58,11 @@ const DisabledMainPin = {
   PROPORTION: 2
 };
 
+const Form = {
+  MIN_LENGTH_TITLE: 30,
+  MAX_LENGTH_TITLE: 100
+};
+
 const NUMBER_OF_ADS = 8;
 const map = document.querySelector(`.map`);
 const mapPins = map.querySelector(`.map__pins`);
@@ -60,6 +72,11 @@ const adForm = document.querySelector(`.ad-form`);
 const roomsNumber = adForm.querySelector(`#room_number`);
 const roomsCapacity = adForm.querySelector(`#capacity`);
 const inputAdress = document.querySelector(`#address`);
+const inputTitle = adForm.querySelector(`#title`);
+const selectType = adForm.querySelector(`#type`);
+const inputPrice = adForm.querySelector(`#price`);
+const selectTimeIn = adForm.querySelector(`timein`);
+const selectTimeOut = adForm.querySelector(`timeout`);
 const mapFilters = document.querySelector(`.map__filters`);
 const pinTemplate = document.querySelector(`#pin`)
   .content
@@ -166,6 +183,14 @@ const removeChildren = function (element) {
   }
 };
 
+const removePins = function () {
+  const pins = document.querySelectorAll(`.map__pin`);
+  pins.forEach(function (pin) {
+    if (pin !== mainPin) {
+      pin.remove();
+    }
+  });
+};
 
 const createOfferFeature = function (element) {
   const childElement = document.createElement(`li`);
@@ -212,7 +237,7 @@ const renderCard = function (card) {
     cardPrice.textContent = `${card.offer.price}₽/ночь`;
   }
   if (card.offer.type) {
-    cardType.textContent = types[card.offer.type];
+    cardType.textContent = Types[card.offer.type];
   }
   if (card.offer.rooms) {
     cardCapacity.textContent = `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`;
@@ -280,6 +305,37 @@ const disablePage = function (isDisabled) {
 
 disablePage(true);
 
+const validateTitle = function () {
+  const valueLength = inputTitle.value.length;
+
+  if (valueLength < Form.MIN_LENGTH_TITLE) {
+    inputTitle.setCustomValidity(`Минимальная длина заголовка - 30 символов. Осталось еще ${Form.MIN_LENGTH_TITLE - valueLength} симв.`);
+  } else if (valueLength > Form.MAX_LENGTH_TITLE) {
+    inputTitle.setCustomValidity(`Максимальная длина заголовка - 100 символов. Удалите лишние ${valueLength - Form.MAX_LENGTH_TITLE} симв.`);
+  } else {
+    inputTitle.setCustomValidity(``);
+  }
+
+  inputTitle.reportValidity();
+};
+
+const validatePriceByType = function () {
+  let type = selectType.value;
+
+  if (type) {
+    inputPrice.min = MinPriceByType[type];
+    inputPrice.placeholder = MinPriceByType[type];
+  }
+};
+
+const validateTimeInOut = function (isTimeIn) {
+  if (isTimeIn) {
+    selectTimeOut.value = selectTimeIn.value;
+  } else {
+    selectTimeIn.value = selectTimeOut.value;
+  }
+};
+
 const validateRoomsCapacity = function (element) {
   const currentRooms = parseInt(roomsNumber.value, 10);
   const currentCapacity = parseInt(roomsCapacity.value, 10);
@@ -297,6 +353,22 @@ const validateRoomsCapacity = function (element) {
   element.reportValidity();
 };
 
+const onInputTitleInput = function () {
+  validateTitle();
+};
+
+const onSelectTypeChange = function () {
+  validatePriceByType();
+};
+
+const onSelectTimeInChange = function () {
+  validateTimeInOut(true);
+};
+
+const onSelectTimeOutChange = function () {
+  validateTimeInOut(false);
+};
+
 const onSelectRoomsChange = function () {
   validateRoomsCapacity(roomsNumber);
 };
@@ -307,9 +379,17 @@ const onSelectCapacityChange = function () {
 
 const onFormChange = function (on) {
   if (on) {
+    selectTimeIn.addEventListener(`change`, onSelectTimeInChange);
+    selectTimeOut.addEventListener(`change`, onSelectTimeOutChange);
+    selectType.addEventListener(`change`, onSelectTypeChange);
+    inputTitle.addEventListener(`input`, onInputTitleInput);
     roomsNumber.addEventListener(`change`, onSelectRoomsChange);
     roomsCapacity.addEventListener(`change`, onSelectCapacityChange);
   } else {
+    selectTimeIn.removeEventListener(`change`, onSelectTimeInChange);
+    selectTimeOut.removeEventListener(`change`, onSelectTimeOutChange);
+    selectType.removeEventListener(`change`, onSelectTypeChange);
+    inputTitle.removeEventListener(`input`, onInputTitleInput);
     roomsNumber.removeEventListener(`change`, onSelectRoomsChange);
     roomsCapacity.removeEventListener(`change`, onSelectCapacityChange);
   }
@@ -320,10 +400,10 @@ const activatePage = function () {
   inputAdress.value = getLocationMainPin(ActiveMainPin.WIDTH, ActiveMainPin.HEIGHT, ActiveMainPin.PROPORTION);
   mainPin.addEventListener(`click`, onFormChange);
   const ads = getAds();
-  renderChildren(mapPins, ads, renderPin);
+  renderChildren(mapPins, ads, renderPin, removePins);
   renderCardOnMap(ads[0]);
   window.removeEventListener(`keydown`, handleKeyDown);
-  window.removeEventListener(`mousedown`, handleMouseDown);
+  mainPin.removeEventListener(`mousedown`, handleMouseDown);
 };
 
 
@@ -338,7 +418,7 @@ function handleMouseDown(evt) {
   }
 }
 
-window.addEventListener(`mousedown`, handleMouseDown);
+mainPin.addEventListener(`mousedown`, handleMouseDown);
 window.addEventListener(`keydown`, handleKeyDown);
 
 
