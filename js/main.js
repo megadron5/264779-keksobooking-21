@@ -323,7 +323,7 @@ const activatePage = function () {
   renderChildren(mapPins, ads, renderPin);
   renderCardOnMap(ads[0]);
   window.removeEventListener(`keydown`, handleKeyDown);
-  window.removeEventListener(`mousedown`, handleMouseDown);
+  mainPin.removeEventListener(`mousedown`, handleMouseDown);
 };
 
 
@@ -338,7 +338,7 @@ function handleMouseDown(evt) {
   }
 }
 
-window.addEventListener(`mousedown`, handleMouseDown);
+mainPin.addEventListener(`mousedown`, handleMouseDown);
 window.addEventListener(`keydown`, handleKeyDown);
 
 
