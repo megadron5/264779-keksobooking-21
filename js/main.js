@@ -20,7 +20,7 @@ const Offer = {
   PHOTO_ALT: `Фото жилья`
 };
 
-const types = {
+const Types = {
   flat: `Квартира`,
   bungalow: `Бунгало`,
   palace: `Дворец`,
@@ -212,7 +212,7 @@ const renderCard = function (card) {
     cardPrice.textContent = `${card.offer.price}₽/ночь`;
   }
   if (card.offer.type) {
-    cardType.textContent = types[card.offer.type];
+    cardType.textContent = Types[card.offer.type];
   }
   if (card.offer.rooms) {
     cardCapacity.textContent = `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`;
@@ -323,7 +323,7 @@ const activatePage = function () {
   renderChildren(mapPins, ads, renderPin);
   renderCardOnMap(ads[0]);
   window.removeEventListener(`keydown`, handleKeyDown);
-  window.removeEventListener(`mousedown`, handleMouseDown);
+  mainPin.removeEventListener(`mousedown`, handleMouseDown);
 };
 
 
@@ -338,7 +338,7 @@ function handleMouseDown(evt) {
   }
 }
 
-window.addEventListener(`mousedown`, handleMouseDown);
+mainPin.addEventListener(`mousedown`, handleMouseDown);
 window.addEventListener(`keydown`, handleKeyDown);
 
 
