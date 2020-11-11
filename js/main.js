@@ -69,14 +69,14 @@ const mapPins = map.querySelector(`.map__pins`);
 const filtersContainer = map.querySelector(`.map__filters-container`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const adForm = document.querySelector(`.ad-form`);
-const roomsNumber = adForm.querySelector(`#room_number`);
-const roomsCapacity = adForm.querySelector(`#capacity`);
-const inputAdress = document.querySelector(`#address`);
-const inputTitle = adForm.querySelector(`#title`);
-const selectType = adForm.querySelector(`#type`);
-const inputPrice = adForm.querySelector(`#price`);
-const selectTimeIn = adForm.querySelector(`timein`);
-const selectTimeOut = adForm.querySelector(`timeout`);
+const roomsNumber = adForm.elements.room_number;
+const roomsCapacity = adForm.elements.capacity;
+const inputAdress = adForm.elements.address;
+const inputTitle = adForm.elements.title;
+const selectType = adForm.elements.type;
+const inputPrice = adForm.elements.price;
+const selectTimeIn = adForm.elements.timein;
+const selectTimeOut = adForm.elements.timeout;
 const mapFilters = document.querySelector(`.map__filters`);
 const pinTemplate = document.querySelector(`#pin`)
   .content
@@ -164,6 +164,13 @@ const getAds = function () {
   return ads;
 };
 
+const removeCard = function () {
+  const card = document.querySelector(`.popup`);
+  if (card) {
+    card.remove();
+  }
+};
+
 const renderPin = function (pin) {
   const pinElement = pinTemplate.cloneNode(true);
   const pinX = pin.location.x - Pin.WIDTH / 2;
@@ -174,6 +181,17 @@ const renderPin = function (pin) {
   avatarElement.src = pin.author.avatar;
   avatarElement.alt = pin.offer.title;
 
+  pinElement.addEventListener(`click`, function () {
+    removeCard();
+    renderCardOnMap(pin);
+  });
+
+  pinElement.addEventListener(`keydown`, function (evt) {
+    if (evt.key === `Enter`) {
+      removeCard();
+      renderCardOnMap(pin);
+    }
+  });
   return pinElement;
 };
 
@@ -220,6 +238,17 @@ const renderChildren = function (parentNode, elements, renderChild, clear = remo
   parentNode.appendChild(fragment);
 };
 
+
+const onCloseButtonClick = function () {
+  removeCard();
+};
+
+const onCloseButtonPress = function (evt) {
+  if (evt.key === `Enter`) {
+    removeCard();
+  }
+};
+
 const renderCard = function (card) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector(`.popup__title`);
@@ -261,6 +290,10 @@ const renderCard = function (card) {
   );
 
   cardAvatar.src = card.author.avatar;
+
+  const closeButton = cardElement.querySelector(`.popup__close`);
+  closeButton.addEventListener(`click`, onCloseButtonClick);
+  closeButton.addEventListener(`keydown`, onCloseButtonPress);
 
   return cardElement;
 };
@@ -401,9 +434,8 @@ const activatePage = function () {
   mainPin.addEventListener(`click`, onFormChange);
   const ads = getAds();
   renderChildren(mapPins, ads, renderPin, removePins);
-  renderCardOnMap(ads[0]);
-  window.removeEventListener(`keydown`, handleKeyDown);
-  mainPin.removeEventListener(`mousedown`, handleMouseDown);
+  // window.removeEventListener(`keydown`, handleKeyDown);
+  // mainPin.removeEventListener(`mousedown`, handleMouseDown);
 };
 
 
