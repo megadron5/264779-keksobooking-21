@@ -91,7 +91,7 @@
   const onSelectRoomsChange = function () {
     validateRoomsCapacity(roomsNumber);
   };
-  
+
   const onSelectCapacityChange = function () {
     validateRoomsCapacity(roomsCapacity);
   };

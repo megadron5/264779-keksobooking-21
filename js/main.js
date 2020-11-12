@@ -1,4 +1,3 @@
-
 'use strict';
 
 (function () {
@@ -66,16 +65,16 @@
     window.util.renderChildren(mapPins, ads, window.map.renderPin, window.remove.removePins);
   };
 
-const handleKeyDown = function (evt) {
-  window.util.isEnterEvent(evt, activatePage);
-};
+  const handleKeyDown = function (evt) {
+    window.util.isEnterEvent(evt, activatePage);
+  };
 
-const handleMouseDown = function (evt) {
-  window.util.isMainMouseButtonEvent(evt, activatePage);
-};
+  const handleMouseDown = function (evt) {
+    window.util.isMainMouseButtonEvent(evt, activatePage);
+  };
 
-mainPin.addEventListener(`mousedown`, handleMouseDown);
-window.addEventListener(`keydown`, handleKeyDown);
+  mainPin.addEventListener(`mousedown`, handleMouseDown);
+  window.addEventListener(`keydown`, handleKeyDown);
 
 
 })();

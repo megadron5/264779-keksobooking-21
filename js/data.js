@@ -2,27 +2,27 @@
 
 (function () {
 
-const Offer = {
-  TITLES_OF: [`Домик`, `Квартира`, `Аппартаменты`, `Сарай`, `Чердак`, `Гостевой дом`],
-  TYPE: [`palace`, `flat`, `house`, `bungalow`],
-  CHECKIN: [`12:00`, `13:00`, `14:00`],
-  CHECKOUT: [`12:00`, `13:00`, `14:00`],
-  FEATURES: [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`],
-  DESCRIPTION_OF: [`Большой дом с трубой.`, `Хороший район.`, `Имеется площадка выгула собак.`, `В комплексе есть банька и купель.`],
-  MIN_FEATURES: 0,
-  PHOTOS: [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`],
-  MIN_PHOTOS: 1,
-  MIN_PRICE: 500,
-  MAX_PRICE: 5000,
-  MIN_ROOMS: 1,
-  MAX_ROOMS: 12,
-  PERSON_PER_ROOM: 2,
-  PHOTO_WIDTH: 45,
-  PHOTO_HEIGHT: 40,
-  PHOTO_ALT: `Фото жилья`
-};
+  const Offer = {
+    TITLES_OF: [`Домик`, `Квартира`, `Аппартаменты`, `Сарай`, `Чердак`, `Гостевой дом`],
+    TYPE: [`palace`, `flat`, `house`, `bungalow`],
+    CHECKIN: [`12:00`, `13:00`, `14:00`],
+    CHECKOUT: [`12:00`, `13:00`, `14:00`],
+    FEATURES: [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`],
+    DESCRIPTION_OF: [`Большой дом с трубой.`, `Хороший район.`, `Имеется площадка выгула собак.`, `В комплексе есть банька и купель.`],
+    MIN_FEATURES: 0,
+    PHOTOS: [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`],
+    MIN_PHOTOS: 1,
+    MIN_PRICE: 500,
+    MAX_PRICE: 5000,
+    MIN_ROOMS: 1,
+    MAX_ROOMS: 12,
+    PERSON_PER_ROOM: 2,
+    PHOTO_WIDTH: 45,
+    PHOTO_HEIGHT: 40,
+    PHOTO_ALT: `Фото жилья`
+  };
 
-const MapSize = {
+  const MapSize = {
     MIN_WIDTH: 0,
     MAX_WIDTH: 1200,
     MIN_HEIGHT: 130,
