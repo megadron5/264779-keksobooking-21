@@ -3,11 +3,6 @@
 (function () {
 
   const map = document.querySelector(`.map`);
-  const ActiveMainPin = {
-    WIDTH: 62,
-    HEIGHT: 78,
-    PROPORTION: 2
-  };
 
   const DisabledMainPin = {
     WIDTH: 65,
@@ -56,13 +51,11 @@
 
   const activatePage = function () {
     disablePage(false);
-    inputAddress.value = getLocationMainPin(ActiveMainPin.WIDTH, ActiveMainPin.HEIGHT, ActiveMainPin.PROPORTION);
-
     window.form.onFormChange(true);
-
     const ads = window.data.getAds();
-
     window.util.renderChildren(mapPins, ads, window.map.renderPin, window.remove.removePins);
+    mainPin.removeEventListener(`mousedown`, handleMouseDown);
+    mainPin.removeEventListener(`keydown`, handleKeyDown);
   };
 
   const handleKeyDown = function (evt) {
