@@ -116,7 +116,6 @@
     return childElement;
   };
 
-
   window.data = {
     getAds,
     createOfferFeature,

@@ -3,66 +3,36 @@
 (function () {
 
   const map = document.querySelector(`.map`);
-  const ActiveMainPin = {
-    WIDTH: 62,
-    HEIGHT: 78,
-    PROPORTION: 2
-  };
-
-  const DisabledMainPin = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    PROPORTION: 2
-  };
-
-
   const mapPins = map.querySelector(`.map__pins`);
-  const adForm = document.querySelector(`.ad-form`);
-  const inputAddress = adForm.elements.address;
-  const mapFilters = document.querySelector(`.map__filters`);
   const mainPin = map.querySelector(`.map__pin--main`);
 
-  const changeFormState = function (form, isDisabled) {
-    window.util.forEach(form.elements, function (formElement) {
-      formElement.disabled = isDisabled;
-    });
-  };
+  const errorTemplate = document.querySelector(`#error`)
+    .content
+    .querySelector(`.error`);
 
-  const getLocationMainPin = function (width, height, proportion) {
-    const pinX = parseInt(mainPin.style.left, 10);
-    const pinY = parseInt(mainPin.style.top, 10);
-    const locationX = pinX + Math.ceil(width / proportion);
-    const locationY = pinY + Math.ceil(height / proportion);
+  window.disable.disablePage(true);
 
-    return `${locationX}, ${locationY}`;
-  };
-
-  const disablePage = function (isDisabled) {
-    if (isDisabled) {
-      map.classList.add(`map--faded`);
-      adForm.classList.add(`ad-form--disabled`);
-    } else {
-      map.classList.remove(`map--faded`);
-      adForm.classList.remove(`ad-form--disabled`);
-    }
-
-    changeFormState(adForm, isDisabled);
-    changeFormState(mapFilters, isDisabled);
-
-    inputAddress.value = getLocationMainPin(DisabledMainPin.WIDTH, DisabledMainPin.HEIGHT, DisabledMainPin.PROPORTION);
-  };
-
-  disablePage(true);
-
-  const activatePage = function () {
-    disablePage(false);
-    inputAddress.value = getLocationMainPin(ActiveMainPin.WIDTH, ActiveMainPin.HEIGHT, ActiveMainPin.PROPORTION);
-
+  const successHandler = function (ads) {
+    window.util.renderChildren(mapPins, ads, window.map.renderPin, window.remove.removePins);
+    window.disable.disablePage(false);
     window.form.onFormChange(true);
 
-    const ads = window.data.getAds();
+    mainPin.removeEventListener(`mousedown`, handleMouseDown);
+    mainPin.removeEventListener(`keydown`, handleKeyDown);
+  };
 
-    window.util.renderChildren(mapPins, ads, window.map.renderPin, window.remove.removePins);
+  const errorHandler = function (errorMessage) {
+    const errorPopup = errorTemplate.cloneNode(true);
+    const errorMessageContainer = errorPopup.querySelector(`.error__message`);
+    errorPopup.style.position = `absolute`;
+    errorPopup.style.left = 0;
+    errorPopup.style.right = 0;
+    errorMessageContainer.textContent = errorMessage;
+    document.body.insertAdjacentElement(`afterbegin`, errorPopup);
+  };
+
+  const activatePage = function () {
+    window.sync.getData(successHandler, errorHandler);
   };
 
   const handleKeyDown = function (evt) {
@@ -75,6 +45,5 @@
 
   mainPin.addEventListener(`mousedown`, handleMouseDown);
   window.addEventListener(`keydown`, handleKeyDown);
-
 
 })();
