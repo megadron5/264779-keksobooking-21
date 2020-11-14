@@ -13,7 +13,7 @@
     house: 5000,
     palace: 10000
   };
-
+  const mainPin = document.querySelector(`.map__pin--main`);
   const adForm = document.querySelector(`.ad-form`);
   const roomsNumber = adForm.elements.room_number;
   const roomsCapacity = adForm.elements.capacity;
@@ -50,10 +50,10 @@
   const validateMinPriceByType = function () {
     const type = selectType.value;
     const minPrice = MinPriceByType[type];
-    const currentPrice = inputPrice.value;
+    const currentPrice = parseInt(inputPrice.value, 10);
 
     if (currentPrice < minPrice) {
-      inputPrice.setCustomValidity(`Минимальная цена для типа жилья ${selectType.options[selectType.selectedIndex].text} - ${minPrice} руб. за ночь.`);
+      inputPrice.setCustomValidity(`Минимальная цена для типа жилья  ${selectType.options[selectType.selectedIndex].text} - ${minPrice} руб. за ночь. Увеличьте цену на ${minPrice - currentPrice} руб.`);
     } else {
       inputPrice.setCustomValidity(``);
     }
@@ -138,10 +138,18 @@
     }
   };
 
-  adForm.addEventListener(`submit`, function (evt) {
-    window.sync.sendData(new FormData(adForm), function () {
-      window.disable.disablePage(true);
+  const onSuccessSendData = function () {
+    window.sync.onload(new FormData(adForm), function () {
+      window.reset.resetPage();
+      window.popup.showSuccesPopup();
+
+      mainPin.addEventListener(`mousedown`, window.activate.handleMouseDown);
+      mainPin.addEventListener(`keydown`, window.activate.handleKeyDown);
     });
+  };
+
+  adForm.addEventListener(`submit`, function (evt) {
+    onSuccessSendData();
     evt.preventDefault();
   });
 

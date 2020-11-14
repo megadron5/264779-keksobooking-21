@@ -28,6 +28,10 @@
     });
   };
 
+  const getCoordMainPin = function () {
+    inputAddress.value = getLocationMainPin(DisabledMainPin.WIDTH, DisabledMainPin.HEIGHT, DisabledMainPin.PROPORTION);
+  };
+
   const disablePage = function (isDisabled) {
     if (isDisabled) {
       map.classList.add(`map--faded`);
@@ -41,12 +45,12 @@
 
     changeFormState(adForm, isDisabled);
     changeFormState(mapFilters, isDisabled);
-
-    inputAddress.value = getLocationMainPin(DisabledMainPin.WIDTH, DisabledMainPin.HEIGHT, DisabledMainPin.PROPORTION);
+    getCoordMainPin();
   };
 
   window.disable = {
-    disablePage
+    disablePage,
+    getCoordMainPin
   };
 
 })();
