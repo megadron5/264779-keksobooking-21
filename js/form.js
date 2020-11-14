@@ -38,12 +38,27 @@
   };
 
   const validatePriceByType = function () {
-    let type = selectType.value;
+    const type = selectType.value;
+    const minPrice = MinPriceByType[type];
 
     if (type) {
-      inputPrice.min = MinPriceByType[type];
-      inputPrice.placeholder = MinPriceByType[type];
+      inputPrice.min = minPrice;
+      inputPrice.placeholder = minPrice;
     }
+  };
+
+  const validateMinPriceByType = function () {
+    const type = selectType.value;
+    const minPrice = MinPriceByType[type];
+    const currentPrice = inputPrice.value;
+
+    if (currentPrice < minPrice) {
+      inputPrice.setCustomValidity(`Минимальная цена для типа жилья ${selectType.options[selectType.selectedIndex].text} - ${minPrice} руб. за ночь.`);
+    } else {
+      inputPrice.setCustomValidity(``);
+    }
+
+    inputPrice.reportValidity();
   };
 
 
@@ -80,6 +95,10 @@
     validatePriceByType();
   };
 
+  const onInputPriceInput = function () {
+    validateMinPriceByType();
+  };
+
   const onSelectTimeInChange = function () {
     validateTimeInOut(true);
   };
@@ -101,6 +120,8 @@
     if (on) {
       selectTimeIn.addEventListener(`change`, onSelectTimeInChange);
       selectTimeOut.addEventListener(`change`, onSelectTimeOutChange);
+      selectType.addEventListener(`change`, onInputPriceInput);
+      inputPrice.addEventListener(`input`, onInputPriceInput);
       selectType.addEventListener(`change`, onSelectTypeChange);
       inputTitle.addEventListener(`input`, onInputTitleInput);
       roomsNumber.addEventListener(`change`, onSelectRoomsChange);
@@ -108,12 +129,21 @@
     } else {
       selectTimeIn.removeEventListener(`change`, onSelectTimeInChange);
       selectTimeOut.removeEventListener(`change`, onSelectTimeOutChange);
+      selectType.removeEventListener(`change`, onInputPriceInput);
+      inputPrice.removeEventListener(`input`, onInputPriceInput);
       selectType.removeEventListener(`change`, onSelectTypeChange);
       inputTitle.removeEventListener(`input`, onInputTitleInput);
       roomsNumber.removeEventListener(`change`, onSelectRoomsChange);
       roomsCapacity.removeEventListener(`change`, onSelectCapacityChange);
     }
   };
+
+  adForm.addEventListener(`submit`, function (evt) {
+    window.sync.sendData(new FormData(adForm), function () {
+      window.disable.disablePage(true);
+    });
+    evt.preventDefault();
+  });
 
 
   window.form = {
