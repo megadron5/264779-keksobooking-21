@@ -29,8 +29,7 @@
 
   const onResetButtonClick = function () {
     resetPage();
-    mainPin.addEventListener(`mousedown`, window.activate.handleMouseDown);
-    mainPin.addEventListener(`keydown`, window.activate.handleKeyDown);
+    window.dot.addEventListenerOnPin();
   };
 
   const onResetButtonPress = function (evt) {
