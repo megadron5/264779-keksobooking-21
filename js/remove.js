@@ -4,6 +4,7 @@
 
   const map = document.querySelector(`.map`);
   const mainPin = map.querySelector(`.map__pin--main`);
+
   const removeCard = function () {
     const card = document.querySelector(`.popup`);
     if (card) {

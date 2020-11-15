@@ -6,7 +6,9 @@
   const mainPin = map.querySelector(`.map__pin--main`);
 
   const onSuccess = function (ads) {
-    window.util.renderChildren(mapPins, ads, window.map.renderPin, window.remove.removePins);
+    window.similarAds = ads;
+    let filteredAds = window.filter.getFilteredAds();
+    window.util.renderChildren(mapPins, filteredAds, window.map.renderPin, window.remove.removePins);
     window.disable.disablePage(false);
     window.form.onFormChange(true);
     mainPin.disabled = false;
@@ -26,6 +28,11 @@
   const handleMouseDown = function (evt) {
     window.util.isMainMouseButtonEvent(evt, activatePage);
   };
+
+  mainPin.addEventListener(`mousedown`, handleMouseDown);
+  window.addEventListener(`keydown`, handleKeyDown);
+
+  window.disable.disablePage(true);
 
 
   window.activate = {
