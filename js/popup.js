@@ -28,8 +28,7 @@
     if (popup) {
       popup.remove();
     }
-    mainPin.addEventListener(`mousedown`, window.activate.handleMouseDown);
-    mainPin.addEventListener(`keydown`, window.activate.handleKeyDown);
+    window.dot.addEventListenersOnPin();
     mainPin.disabled = false;
   };
 
@@ -41,8 +40,7 @@
       messageContainer.textContent = message;
     }
 
-    mainPin.removeEventListener(`mousedown`, window.activate.handleMouseDown);
-    mainPin.removeEventListener(`keydown`, window.activate.handleKeyDown);
+    window.dot.removeEventListenersOnPin();
     mainPin.disabled = true;
 
     if (buttonSelector) {

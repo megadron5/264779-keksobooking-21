@@ -13,7 +13,6 @@
     house: 5000,
     palace: 10000
   };
-  const mainPin = document.querySelector(`.map__pin--main`);
   const adForm = document.querySelector(`.ad-form`);
   const roomsNumber = adForm.elements.room_number;
   const roomsCapacity = adForm.elements.capacity;
@@ -142,9 +141,8 @@
     window.sync.onload(new FormData(adForm), function () {
       window.reset.resetPage();
       window.popup.showSuccesPopup();
+      window.dot.addEventListenerOnPin();
 
-      mainPin.addEventListener(`mousedown`, window.activate.handleMouseDown);
-      mainPin.addEventListener(`keydown`, window.activate.handleKeyDown);
     });
   };
 
