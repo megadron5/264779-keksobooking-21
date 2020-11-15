@@ -39,7 +39,7 @@
     currentFilter[evt.target.name] = evt.target.value;
     let filteredAds = getFilteredAds();
     window.remove.removeCard();
-    window.util.renderChildren(mapPins, filteredAds, window.map.renderPinOnMap, window.remove.removePins);
+    window.util.renderChildren(mapPins, filteredAds, window.map.renderPin, window.remove.removePins);
   };
 
   selectHousingType.addEventListener(`change`, onSelectFilterChange);
