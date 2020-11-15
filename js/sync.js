@@ -2,54 +2,73 @@
 
 (function () {
 
-  const sendURL = `https://21.javascript.pages.academy/keksobooking`;
-  const getURL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const TIMEOUT_IN_MS = 10000;
+
+  const Urls = {
+    ONLOAD: `https://21.javascript.pages.academy/keksobooking`,
+    LOAD: `https://21.javascript.pages.academy/keksobooking/data`
+  };
+
   const statusCode = {
     OK: 200
   };
 
-  const TIMEOUT_IN_MS = 1000;
-
-  const sendData = function (data, onSucces) {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = `json`;
-
-    xhr.addEventListener(`load`, function () {
-      onSucces(xhr.response);
-    });
-
-    xhr.open(`POST`, sendURL);
-    xhr.send(data);
+  const Methods = {
+    GET: `GET`,
+    POST: `POST`
   };
 
-  const getData = function (onSuccess, onError) {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = `json`;
+  const checkStatusCode = function (xhr, onSuccess, onError) {
+    if (xhr.status === statusCode.OK) {
+      onSuccess(xhr.response);
+    } else {
+      onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
+    }
+  };
 
-    xhr.addEventListener(`load`, function () {
-      if (xhr.status === statusCode.OK) {
-        onSuccess(xhr.response);
-      } else {
-        onError(`Статус ответа: ` + xhr.status + +xhr.statusText);
-      }
-    });
-
+  const checkConnectError = function (xhr, onError) {
     xhr.addEventListener(`error`, function () {
       onError(`Произошла ошибка соединения`);
     });
+  };
+
+  const checkTimeoutError = function (xhr, onError) {
     xhr.addEventListener(`timeout`, function () {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс.`);
+    });
+  };
+
+
+  const request = function (URL, onSuccess, onError, method = Methods.GET, data) {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
+
+    xhr.addEventListener(`load`, function () {
+      checkStatusCode(xhr, onSuccess, onError);
+      onSuccess(xhr.response);
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open(`GET`, getURL);
-    xhr.send();
+    checkConnectError(xhr, onError);
+    checkTimeoutError(xhr, onError);
+
+    xhr.open(method, URL);
+    xhr.send(data);
   };
 
+  const onload = function (data, onSuccess) {
+    request(Urls.ONLOAD, onSuccess, window.popup.onError, Methods.POST, data);
+  };
+
+  const load = function (onSuccess) {
+    request(Urls.LOAD, onSuccess, window.popup.onError, Methods.GET, null);
+  };
+
+
   window.sync = {
-    sendData,
-    getData
+    onload,
+    load
   };
 
 })();
