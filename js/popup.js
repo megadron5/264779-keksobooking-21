@@ -28,7 +28,7 @@
     if (popup) {
       popup.remove();
     }
-    window.dot.addEventListenersOnPin();
+    window.dot.addEventListenerOnPin();
     mainPin.disabled = false;
   };
 
@@ -40,7 +40,7 @@
       messageContainer.textContent = message;
     }
 
-    window.dot.removeEventListenersOnPin();
+    window.dot.removeEventListenerOnPin();
     mainPin.disabled = true;
 
     if (buttonSelector) {
