@@ -18,7 +18,7 @@
 
   const removeEventListenerOnPin = function () {
     mainPin.removeEventListener(`mousedown`, handleMouseDown);
-    mainPin.removeEventListener(`keydown`, handleKeyDown);
+    window.removeEventListener(`keydown`, handleKeyDown);
   };
 
   window.dot = {
