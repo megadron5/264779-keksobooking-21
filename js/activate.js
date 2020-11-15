@@ -27,6 +27,11 @@
     window.util.isMainMouseButtonEvent(evt, activatePage);
   };
 
+  mainPin.addEventListener(`mousedown`, handleMouseDown);
+  window.addEventListener(`keydown`, handleKeyDown);
+
+  window.disable.disablePage(true);
+
 
   window.activate = {
     handleMouseDown,

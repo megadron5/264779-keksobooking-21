@@ -9,7 +9,7 @@
     LOAD: `https://21.javascript.pages.academy/keksobooking/data`
   };
 
-  const statusCode = {
+  const StatusCode = {
     OK: 200
   };
 
@@ -19,7 +19,7 @@
   };
 
   const checkStatusCode = function (xhr, onSuccess, onError) {
-    if (xhr.status === statusCode.OK) {
+    if (xhr.status === StatusCode.OK) {
       onSuccess(xhr.response);
     } else {
       onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
