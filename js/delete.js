@@ -10,8 +10,9 @@
     if (card) {
       card.remove();
     }
+    document.removeEventListener(`keydown`, window.card.onEscClose);
+    window.map.removeActivePin();
   };
-
   const removeChildren = function (element) {
     while (element.firstChild) {
       element.firstChild.remove();
@@ -27,7 +28,7 @@
     });
   };
 
-  window.remove = {
+  window.delete = {
     removeCard,
     removeChildren,
     removePins

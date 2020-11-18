@@ -8,8 +8,8 @@
   const mapFilters = document.querySelector(`.map__filters`);
 
   const DisabledMainPin = {
-    WIDTH: 65,
-    HEIGHT: 65,
+    WIDTH: 62,
+    HEIGHT: 78,
     PROPORTION: 2
   };
 
@@ -17,7 +17,7 @@
     const pinX = parseInt(mainPin.style.left, 10);
     const pinY = parseInt(mainPin.style.top, 10);
     const locationX = pinX + Math.ceil(width / proportion);
-    const locationY = pinY + Math.ceil(height / proportion);
+    const locationY = pinY + height;
 
     return `${locationX}, ${locationY}`;
   };
@@ -32,12 +32,12 @@
     inputAddress.value = getLocationMainPin(DisabledMainPin.WIDTH, DisabledMainPin.HEIGHT, DisabledMainPin.PROPORTION);
   };
 
-  const disablePage = function (isDisabled) {
+  const page = function (isDisabled) {
     if (isDisabled) {
       map.classList.add(`map--faded`);
       adForm.classList.add(`ad-form--disabled`);
-      window.remove.removePins();
-      window.remove.removeCard();
+      window.delete.removePins();
+      window.delete.removeCard();
     } else {
       map.classList.remove(`map--faded`);
       adForm.classList.remove(`ad-form--disabled`);
@@ -49,7 +49,7 @@
   };
 
   window.disable = {
-    disablePage,
+    page,
     getCoordMainPin
   };
 

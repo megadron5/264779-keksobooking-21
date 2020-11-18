@@ -6,25 +6,25 @@
 
   const onSuccess = function (ads) {
     window.similarAds = ads;
-    const filteredAds = window.filter.getFilteredAds();
-    window.util.renderChildren(mapPins, filteredAds, window.map.renderPin, window.remove.removePins);
-    window.disable.disablePage(false);
-    window.form.onFormChange(true);
-    window.reset.onResetButton();
+    const filteredAds = window.filter.getAds();
+    window.util.renderChildren(mapPins, filteredAds, window.map.renderPin, window.delete.removePins);
+    window.disable.page(false);
+    window.form.onChange(true);
+    window.reset.addListenerOnResetButton();
     window.dot.removeEventListenerOnPin();
     mainPin.disabled = false;
   };
 
-  const activatePage = function () {
+  const pageAct = function () {
     window.sync.load(onSuccess);
   };
 
   window.dot.addEventListenerOnPin();
 
-  window.disable.disablePage(true);
+  window.disable.page(true);
 
   window.activate = {
-    activatePage
+    pageAct
   };
 
 })();

@@ -29,27 +29,7 @@
     }
   };
 
-  const getRandomIntInclusive = function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  const getRandomElement = function (elements) {
-    return elements[window.util.getRandomIntInclusive(0, elements.length - 1)];
-  };
-
-  const getMaxElement = function (elements) {
-    const maxElement = elements[0];
-
-    for (let i = 1; i < elements.length; i++) {
-      maxElement = Math.max(maxElement, elements[i]);
-    }
-
-    return maxElement;
-  };
-
-  const renderChildren = function (parentNode, elements, renderChild, clear = window.remove.removeChildren) {
+  const renderChildren = function (parentNode, elements, renderChild, clear = window.delete.removeChildren) {
     clear(parentNode);
     const fragment = document.createDocumentFragment();
     elements.forEach(function (element) {
@@ -68,9 +48,6 @@
     isClickEvent,
     isEnterEvent,
     isMainMouseButtonEvent,
-    getRandomIntInclusive,
-    getRandomElement,
-    getMaxElement,
     renderChildren,
     forEach
   };

@@ -13,16 +13,19 @@
     .content
     .querySelector(`.map__card`);
 
-
   const onCloseButtonClick = function () {
-    window.remove.removeCard();
+    window.delete.removeCard();
   };
 
   const onCloseButtonPress = function (evt) {
-    window.util.isEnterEvent(evt, window.remove.removeCard);
+    window.util.isEnterEvent(evt, window.delete.removeCard);
   };
 
-  const renderCard = function (ad) {
+  const onEscClose = function (evt) {
+    window.util.isEscEvent(evt, window.delete.removeCard);
+  };
+
+  const render = function (ad) {
     const cardElement = cardTemplate.cloneNode(true);
 
     const cardTitle = cardElement.querySelector(`.popup__title`);
@@ -71,6 +74,7 @@
 
     const closeButton = cardElement.querySelector(`.popup__close`);
 
+    document.addEventListener(`keydown`, onEscClose);
     closeButton.addEventListener(`click`, onCloseButtonClick);
     closeButton.addEventListener(`keydown`, onCloseButtonPress);
 
@@ -79,7 +83,8 @@
 
 
   window.card = {
-    renderCard
+    render,
+    onEscClose
   };
 
 })();

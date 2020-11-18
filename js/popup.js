@@ -58,13 +58,13 @@
     renderPopup(errorMessage, errorTemplate, `.error__message`, `.error__button`);
   };
 
-  const showSuccesPopup = function () {
+  const showSucces = function () {
     renderPopup(null, successTemplate, null, null);
   };
 
   window.popup = {
     onError,
-    showSuccesPopup
+    showSucces
   };
 
 })();

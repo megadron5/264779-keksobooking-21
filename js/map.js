@@ -13,6 +13,13 @@
     .content
     .querySelector(`.map__pin`);
 
+  const removeActivePin = function () {
+    const activePin = map.querySelector(`.map__pin--active`);
+    if (activePin) {
+      activePin.classList.remove(`map__pin--active`);
+    }
+  };
+
   const renderPin = function (pin) {
     const pinElement = pinTemplate.cloneNode(true);
     const pinX = pin.location.x - Pin.WIDTH / 2;
@@ -24,8 +31,8 @@
     avatarElement.alt = pin.offer.title;
 
     const showCard = function () {
-      window.remove.removeCard();
-      window.map.renderCardOnMap(pin);
+      window.delete.removeCard();
+      window.map.renderCard(pin);
     };
 
     const onPinElementClick = function () {
@@ -43,13 +50,14 @@
     return pinElement;
   };
 
-  const renderCardOnMap = function (ad) {
-    map.insertBefore(window.card.renderCard(ad), filtersContainer);
+  const renderCard = function (ad) {
+    map.insertBefore(window.card.render(ad), filtersContainer);
   };
 
   window.map = {
     renderPin,
-    renderCardOnMap
+    renderCard,
+    removeActivePin
   };
 
 })();

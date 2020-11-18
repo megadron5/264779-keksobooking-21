@@ -38,14 +38,12 @@
     });
   };
 
-
   const request = function (URL, onSuccess, onError, method = Methods.GET, data) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
       checkStatusCode(xhr, onSuccess, onError);
-      onSuccess(xhr.response);
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
@@ -57,7 +55,7 @@
     xhr.send(data);
   };
 
-  const onload = function (data, onSuccess) {
+  const servload = function (data, onSuccess) {
     request(Urls.ONLOAD, onSuccess, window.popup.onError, Methods.POST, data);
   };
 
@@ -65,9 +63,8 @@
     request(Urls.LOAD, onSuccess, window.popup.onError, Methods.GET, null);
   };
 
-
   window.sync = {
-    onload,
+    servload,
     load
   };
 

@@ -3,13 +3,14 @@
 (function () {
 
   const MAX_SIMILAR_AD_COUNT = 5;
+  const ANY_FILTER_VALUE = `any`;
   const map = document.querySelector(`.map`);
   const mapPins = map.querySelector(`.map__pins`);
   const mapFilters = document.querySelector(`.map__filters`);
-  const selectHousingType = mapFilters.querySelector(`#housing-type`);
-  const selectHousingPrice = mapFilters.querySelector(`#housing-price`);
-  const selectHousingRooms = mapFilters.querySelector(`#housing-rooms`);
-  const selectHousingGuests = mapFilters.querySelector(`#housing-guests`);
+  const housingTypeSelect = mapFilters.querySelector(`#housing-type`);
+  const housingPriceSelect = mapFilters.querySelector(`#housing-price`);
+  const housingRoomsSelect = mapFilters.querySelector(`#housing-rooms`);
+  const housingGuestsSelect = mapFilters.querySelector(`#housing-guests`);
   const featureFieldset = mapFilters.querySelector(`.map__features`);
 
   const createInitialFilters = function () {
@@ -29,7 +30,7 @@
 
   let currentFilter = createInitialFilters();
 
-  const resetCurrentFilter = function () {
+  const resetCurrent = function () {
     currentFilter = createInitialFilters();
   };
 
@@ -49,7 +50,7 @@
   };
 
   const isAny = function (filterValue) {
-    return filterValue === `any`;
+    return filterValue === ANY_FILTER_VALUE;
   };
 
   const checkType = function (elementValue, filterValue) {
@@ -63,7 +64,7 @@
   };
 
   const checkNumbers = function (elementValue, filterValue) {
-    if (filterValue !== `any`) {
+    if (filterValue !== ANY_FILTER_VALUE) {
       filterValue = parseInt(filterValue, 10);
     }
     return isAny(filterValue) || elementValue === filterValue;
@@ -98,8 +99,7 @@
     return outElements;
   };
 
-
-  const getFilteredAds = function () {
+  const getAds = function () {
     const ads = window.similarAds;
     return filter(ads, isSimilarAds, MAX_SIMILAR_AD_COUNT);
   };
@@ -107,13 +107,13 @@
   const changeCheckbox = function (evt) {
     currentFilter[evt.target.id] = currentFilter[evt.target.id] !== evt.target.value
       ? evt.target.value
-      : `any`;
+      : ANY_FILTER_VALUE;
   };
 
   const renderFilteredAds = function () {
-    const filteredAds = getFilteredAds();
-    window.remove.removeCard();
-    window.util.renderChildren(mapPins, filteredAds, window.map.renderPin, window.remove.removePins);
+    const filteredAds = getAds();
+    window.delete.removeCard();
+    window.util.renderChildren(mapPins, filteredAds, window.map.renderPin, window.delete.removePins);
   };
 
   const renderFilteredAdsDebounced = window.debounce(renderFilteredAds);
@@ -128,15 +128,15 @@
     renderFilteredAdsDebounced();
   };
 
-  selectHousingType.addEventListener(`change`, onSelectFilterChange);
-  selectHousingPrice.addEventListener(`change`, onSelectFilterChange);
-  selectHousingRooms.addEventListener(`change`, onSelectFilterChange);
-  selectHousingGuests.addEventListener(`change`, onSelectFilterChange);
+  housingTypeSelect.addEventListener(`change`, onSelectFilterChange);
+  housingPriceSelect.addEventListener(`change`, onSelectFilterChange);
+  housingRoomsSelect.addEventListener(`change`, onSelectFilterChange);
+  housingGuestsSelect.addEventListener(`change`, onSelectFilterChange);
   featureFieldset.addEventListener(`change`, onSelectFilterChange);
 
   window.filter = {
-    resetCurrentFilter,
-    getFilteredAds
+    resetCurrent,
+    getAds
   };
 
 })();

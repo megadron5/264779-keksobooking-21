@@ -2,16 +2,19 @@
 
 (function () {
 
+  const MIN_VALUE_HERE = 0;
+  const MAX_VALUE_HERE = 100;
+
   const Form = {
     MIN_LENGTH_TITLE: 30,
     MAX_LENGTH_TITLE: 100
   };
 
-  const MinPriceByType = {
-    bungalow: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+  const MIN_PRICE_BY_TYPE = {
+    BUNGALOW: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
   const adForm = document.querySelector(`.ad-form`);
   const roomsNumber = adForm.elements.room_number;
@@ -38,7 +41,7 @@
 
   const validatePriceByType = function () {
     const type = selectType.value;
-    const minPrice = MinPriceByType[type];
+    const minPrice = MIN_PRICE_BY_TYPE[type];
 
     if (type) {
       inputPrice.min = minPrice;
@@ -48,7 +51,7 @@
 
   const validateMinPriceByType = function () {
     const type = selectType.value;
-    const minPrice = MinPriceByType[type];
+    const minPrice = MIN_PRICE_BY_TYPE[type];
     const currentPrice = parseInt(inputPrice.value, 10);
 
     if (currentPrice < minPrice) {
@@ -60,7 +63,6 @@
     inputPrice.reportValidity();
   };
 
-
   const validateTimeInOut = function (isTimeIn) {
     if (isTimeIn) {
       selectTimeOut.value = selectTimeIn.value;
@@ -69,21 +71,21 @@
     }
   };
 
-  const validateRoomsCapacity = function (element) {
-    const currentRooms = parseInt(roomsNumber.value, 10);
-    const currentCapacity = parseInt(roomsCapacity.value, 10);
-
-    if (currentRooms < currentCapacity) {
-      element.setCustomValidity(`Для ${currentCapacity} гостей нужно минимум ${currentCapacity} комнаты`);
-    } else if (currentRooms === 100 && currentCapacity !== 0) {
-      element.setCustomValidity(`Для "100 комнат" нужно выбрать "не для гостей"`);
-    } else if (currentRooms !== 100 && currentCapacity === 0) {
-      element.setCustomValidity(`Не для гостей нужно выбрать 100 комнат`);
+  const validateRoomsCapacity = function () {
+    const currentRooms = Number(roomsNumber.value);
+    const currentCapacity = Number(roomsCapacity.value);
+    if (currentCapacity !== MIN_VALUE_HERE && currentCapacity > currentRooms) {
+      roomsCapacity.setCustomValidity(`Количество гостей не должно превышать количество комнат.`);
+      roomsCapacity.reportValidity();
+    } else if (currentCapacity !== MIN_VALUE_HERE && currentRooms === MAX_VALUE_HERE) {
+      roomsCapacity.setCustomValidity(`Не для гостей нужно выбрать 100 комнат`);
+      roomsCapacity.reportValidity();
+    } else if (currentCapacity === MIN_VALUE_HERE && currentRooms !== MAX_VALUE_HERE) {
+      roomsCapacity.setCustomValidity(`Пригласите гостей.`);
+      roomsCapacity.reportValidity();
     } else {
-      element.setCustomValidity(``);
+      roomsCapacity.setCustomValidity(``);
     }
-
-    element.reportValidity();
   };
 
   const onInputTitleInput = function () {
@@ -114,8 +116,7 @@
     validateRoomsCapacity(roomsCapacity);
   };
 
-
-  const onFormChange = function (on) {
+  const onChange = function (on) {
     if (on) {
       selectTimeIn.addEventListener(`change`, onSelectTimeInChange);
       selectTimeOut.addEventListener(`change`, onSelectTimeOutChange);
@@ -138,22 +139,21 @@
   };
 
   const onSuccessSendData = function () {
-    window.sync.onload(new FormData(adForm), function () {
-      window.reset.resetPage();
-      window.popup.showSuccesPopup();
+    window.sync.servload(new FormData(adForm), function () {
+      window.reset.pageRes();
+      window.popup.showSucces();
       window.dot.addEventListenerOnPin();
-
     });
   };
 
   adForm.addEventListener(`submit`, function (evt) {
-    onSuccessSendData();
     evt.preventDefault();
+    onSuccessSendData();
   });
 
 
   window.form = {
-    onFormChange
+    onChange
   };
 
 })();

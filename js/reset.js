@@ -17,34 +17,32 @@
     mainPin.style.top = `${MainPinStartCoords.Y}px`;
   };
 
-  const resetPage = function () {
-    window.disable.disablePage(true);
+  const pageRes = function () {
+    window.disable.page(true);
     adForm.reset();
     mapFilters.reset();
     moveToStartPosition();
     window.disable.getCoordMainPin();
-    window.form.onFormChange(false);
+    window.form.onChange(false);
   };
 
-
   const onResetButtonClick = function () {
-    resetPage();
+    pageRes();
     window.dot.addEventListenerOnPin();
   };
 
   const onResetButtonPress = function (evt) {
-    window.util.isEnterEvent(evt, resetPage);
+    window.util.isEnterEvent(evt, pageRes);
   };
 
-  const onResetButton = function () {
+  const addListenerOnResetButton = function () {
     resetButton.addEventListener(`click`, onResetButtonClick);
-    resetButton.addEventListener(`click`, onResetButtonPress);
+    window.addEventListener(`keydown`, onResetButtonPress);
   };
-
 
   window.reset = {
-    resetPage,
-    onResetButton
+    pageRes,
+    addListenerOnResetButton
   };
 
 
