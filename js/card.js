@@ -3,10 +3,10 @@
 (function () {
 
   const Types = {
-    bungalow: `Бунгало`,
-    flat: `Квартира`,
-    house: `Дом`,
-    palace: `Дворец`
+    BUNGALOW: `Бунгало`,
+    FLAT: `Квартира`,
+    HOUSE: `Дом`,
+    PALACE: `Дворец`
   };
 
   const cardTemplate = document.querySelector(`#card`)
@@ -47,7 +47,7 @@
       cardPrice.textContent = `${ad.offer.price}₽/ночь`;
     }
     if (ad.offer.type) {
-      cardType.textContent = Types[ad.offer.type];
+      cardType.textContent = Types[ad.offer.typetoUpperCase()];
     }
     if (ad.offer.rooms) {
       cardCapacity.textContent = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`;

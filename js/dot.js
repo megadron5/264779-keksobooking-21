@@ -3,22 +3,22 @@
 
   const mainPin = document.querySelector(`.map__pin--main`);
 
-  const onHandleMouseDown = function (evt) {
+  const onMainPinClick = function (evt) {
     window.util.isMainMouseButtonEvent(evt, window.activate.pageAct);
   };
 
-  const onHandleKeyDown = function (evt) {
+  const onMainPinPress = function (evt) {
     window.util.isEnterEvent(evt, window.activate.pageAct);
   };
 
   const addEventListenerOnPin = function () {
-    mainPin.addEventListener(`mousedown`, onHandleMouseDown);
-    window.addEventListener(`keydown`, onHandleKeyDown);
+    mainPin.addEventListener(`mousedown`, onMainPinClick);
+    window.addEventListener(`keydown`, onMainPinPress);
   };
 
   const removeEventListenerOnPin = function () {
-    mainPin.removeEventListener(`mousedown`, onHandleMouseDown);
-    window.removeEventListener(`keydown`, onHandleKeyDown);
+    mainPin.removeEventListener(`mousedown`, onMainPinClick);
+    window.removeEventListener(`keydown`, onMainPinPress);
   };
 
   window.dot = {

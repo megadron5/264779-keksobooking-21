@@ -10,7 +10,7 @@
     MAX_LENGTH_TITLE: 100
   };
 
-  const MIN_PRICE_BY_TYPE = {
+  const MinPriceByType = {
     BUNGALOW: 0,
     FLAT: 1000,
     HOUSE: 5000,
@@ -41,7 +41,7 @@
 
   const validatePriceByType = function () {
     const type = selectType.value;
-    const minPrice = MIN_PRICE_BY_TYPE[type];
+    const minPrice = MinPriceByType[type.toUpperCase()];
 
     if (type) {
       inputPrice.min = minPrice;
@@ -51,7 +51,7 @@
 
   const validateMinPriceByType = function () {
     const type = selectType.value;
-    const minPrice = MIN_PRICE_BY_TYPE[type];
+    const minPrice = MinPriceByType[type.toUpperCase()];
     const currentPrice = parseInt(inputPrice.value, 10);
 
     if (currentPrice < minPrice) {
